@@ -3,7 +3,7 @@
     $ docker-compose up
 ### Configuração de Conexão
     
-    # Verificar o ip do conteiner via comando "docker inspect nome-container"
+    # Verificar o ip do container via comando "docker inspect nome-container"
     host: 172.19.0.2
     port: 3306
     banco: rest_with_spring_boot_udemy
