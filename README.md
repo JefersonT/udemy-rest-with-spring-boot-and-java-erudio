@@ -3,8 +3,18 @@
     $ docker-compose up
 ### Configuração de Conexão
     
-    # Verificar o ip do container via comando "docker inspect nome-container"
-    host: 172.19.0.2
+    # Caso o ip já esteja em uso, redefini-lo no arquivo docker-compose.yml"
+    host: 172.21.0.2
     port: 3306
     banco: rest_with_spring_boot_udemy
     senha: admin123
+
+### Comandos para rodar as migrations do flyway via terminal
+
+    # Acessa o projeto via terminal e roda o projeto
+    mvn clean package spring-boot:run
+    # Ou desta forma para pular os testes
+    mvn clean package spring-boot:run -DskipTests
+
+    # Ou acessa o projeto via terminal e roda apenas as migrations
+    mvn flyway:migrate
