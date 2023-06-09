@@ -1,4 +1,4 @@
-package br.com.erudio.unittests.mockito.services;
+package br.com.erudio.services;
 
 import br.com.erudio.controllers.PersonController;
 import br.com.erudio.data.vo.v1.PersonVO;
@@ -52,7 +52,7 @@ public class PersonServices {
     }
 
     public void delete(Long id){
-        logger.info("Deleting one PersonVOVO");
+        logger.info("Deleting one PersonVO");
         Person entity = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         personRepository.delete(entity);
     }
