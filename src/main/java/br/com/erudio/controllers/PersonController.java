@@ -40,6 +40,7 @@ public class PersonController {
         return personServices.findAll();
     }
 
+//    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
     @Operation(summary = "Finds a Person", description = "Finds a Person",
             tags = {"People"},
@@ -56,6 +57,7 @@ public class PersonController {
         return personServices.findById(id);
     }
 
+//    @CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"}) //apenas para configurar endpoint específico
     @PostMapping(consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
             produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
     @Operation(summary = "Adds a new Person", description = "Adds a new Person by passin in a JSON, XML or YML representation of Person",
