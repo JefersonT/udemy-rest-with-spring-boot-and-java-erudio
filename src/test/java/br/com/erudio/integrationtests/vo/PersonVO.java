@@ -1,5 +1,6 @@
 package br.com.erudio.integrationtests.vo;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +8,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@XmlRootElement
 public class PersonVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
