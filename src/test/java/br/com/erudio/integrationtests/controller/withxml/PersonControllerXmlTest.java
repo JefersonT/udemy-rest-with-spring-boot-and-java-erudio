@@ -1,4 +1,4 @@
-package br.com.erudio.integrationtests.controller.withjson;
+package br.com.erudio.integrationtests.controller.withxml;
 
 import br.com.erudio.configs.TestConfigs;
 import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
@@ -8,7 +8,7 @@ import br.com.erudio.integrationtests.vo.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -28,16 +28,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
-class PersonControllerJsonTest extends AbstractIntegrationTest {
+class PersonControllerXmlTest extends AbstractIntegrationTest {
 
 	private static RequestSpecification specification;
-	private static ObjectMapper objectMapper;
+	private static XmlMapper objectMapper;
 
 	private static PersonVO person;
 
 	@BeforeAll
 	public static void setup(){
-		objectMapper = new ObjectMapper();
+		objectMapper = new XmlMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 		person = new PersonVO();
@@ -51,7 +51,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 		var accessToken = given()
 				.basePath("/auth/signin")
 					.port(TestConfigs.SERVER_PORT)
-					.contentType(TestConfigs.CONTENT_TYPE_JSON)
+					.contentType(TestConfigs.CONTENT_TYPE_XML)
+					.accept(TestConfigs.CONTENT_TYPE_XML)
 				.body(user)
 					.when()
 				.post()
@@ -78,7 +79,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var content = given()
 				.spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.body(person)
 					.when()
 					.post()
@@ -112,7 +114,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var content = given()
 				.spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.body(person)
 					.when()
 					.post()
@@ -145,7 +148,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 		mockPerson();
 
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
 					.pathParams("id", person.getId())
 					.when()
@@ -179,7 +183,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 	public void testDelete() {
 
 		given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.pathParams("id", person.getId())
 					.when()
 					.delete("{id}")
@@ -192,7 +197,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 	public void testFindAll() throws JsonProcessingException {
 
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.when()
 					.get()
 				.then()
@@ -246,14 +252,12 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 				.build();
 
 		given().spec(specificationWithoutToken)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.when()
 					.get()
 				.then()
-					.statusCode(403)
-						.extract()
-						.body()
-							.asString();
+					.statusCode(403);
 	}
 
 	private void mockPerson() {

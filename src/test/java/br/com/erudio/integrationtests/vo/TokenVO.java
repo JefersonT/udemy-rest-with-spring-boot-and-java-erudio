@@ -10,7 +10,7 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlRootElement
+@XmlRootElement(name = "TokenVO")
 @Data
 public class TokenVO implements Serializable {
 
