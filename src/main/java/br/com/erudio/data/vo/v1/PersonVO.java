@@ -24,6 +24,7 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
     private String lastName;
     private String address;
     private String gender;
+    private Boolean enabled;
 
     @Override
     public String toString() {
@@ -33,6 +34,7 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", gender='" + gender + '\'' +
+                ", enabled='" + enabled + '\'' +
                 ", " + super.toString() +
                 "} ";
     }

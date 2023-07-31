@@ -18,6 +18,7 @@ public class PersonVO implements Serializable {
     private String lastName;
     private String address;
     private String gender;
+    private Boolean enabled;
 
     @Override
     public String toString() {
@@ -27,6 +28,7 @@ public class PersonVO implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", gender='" + gender + '\'' +
+                ", enabled='" + enabled + '\'' +
                 ", " + super.toString() +
                 "} ";
     }

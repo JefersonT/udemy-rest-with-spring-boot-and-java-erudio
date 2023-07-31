@@ -105,6 +105,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertEquals("Piquet", persistedPerson.getLastName());
 		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
+		assertTrue(persistedPerson.getEnabled());
 	}
 
 	@Test
@@ -140,10 +141,47 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertEquals("Piquet Souto Maior", persistedPerson.getLastName());
 		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
+		assertTrue(persistedPerson.getEnabled());
 	}
 
 	@Test
 	@Order(3)
+	public void testDisablePersonById() throws JsonProcessingException {
+
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
+				.pathParams("id", person.getId())
+				.when()
+				.patch("{id}")
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+
+		PersonVO persistedPerson = objectMapper.readValue(content, PersonVO.class);
+		person = persistedPerson;
+
+		assertNotNull(persistedPerson);
+		assertNotNull(persistedPerson.getId());
+		assertNotNull(persistedPerson.getFirstName());
+		assertNotNull(persistedPerson.getLastName());
+		assertNotNull(persistedPerson.getAddress());
+		assertNotNull(persistedPerson.getGender());
+
+		assertTrue(persistedPerson.getId() > 0);
+
+		assertEquals("Nelson", persistedPerson.getFirstName());
+		assertEquals("Piquet Souto Maior", persistedPerson.getLastName());
+		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
+		assertEquals("Male", persistedPerson.getGender());
+		assertFalse(persistedPerson.getEnabled());
+	}
+
+	@Test
+	@Order(4)
 	public void testFindById() throws JsonProcessingException {
 		mockPerson();
 
@@ -176,10 +214,11 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertEquals("Piquet Souto Maior", persistedPerson.getLastName());
 		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
+		assertFalse(persistedPerson.getEnabled());
 	}
 
 	@Test
-	@Order(4)
+	@Order(5)
 	public void testDelete() {
 
 		given().spec(specification)
@@ -193,7 +232,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Order(5)
+	@Order(6)
 	public void testFindAll() throws JsonProcessingException {
 
 		var content = given().spec(specification)
@@ -223,6 +262,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertEquals("Costa", foundPersonOne.getLastName());
 		assertEquals("Uberlândia - Minas Gerais - Brasil", foundPersonOne.getAddress());
 		assertEquals("Male", foundPersonOne.getGender());
+		assertTrue(foundPersonOne.getEnabled());
 
 		PersonVO foundPersonSix = people.get(5);
 
@@ -238,10 +278,11 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertEquals("Mandela", foundPersonSix.getLastName());
 		assertEquals("Mvezo - South Africa", foundPersonSix.getAddress());
 		assertEquals("Male", foundPersonSix.getGender());
+		assertTrue(foundPersonSix.getEnabled());
 	}
 
 	@Test
-	@Order(6)
+	@Order(7)
 	public void testFindAllWithoutToken() {
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
@@ -265,6 +306,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 		person.setLastName("Piquet");
 		person.setAddress("Brasília - DF - Brasil");
 		person.setGender("Male");
+		person.setEnabled(true);
 	}
 
 }
