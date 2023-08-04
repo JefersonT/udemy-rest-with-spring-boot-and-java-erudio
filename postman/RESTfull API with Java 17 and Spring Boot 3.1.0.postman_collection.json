@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "a786d622-305a-4ab0-b266-e98ffcc787ef",
+		"_postman_id": "4667f3b7-8acc-4589-b932-07ddf598f24f",
 		"name": "RESTfull API with Java 17 and Spring Boot 3.1.0",
 		"description": "Some description about your API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19022518"
 	},
 	"item": [
 		{
@@ -25,7 +26,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/person/v1/13",
+							"raw": "{{baseUrl}}/api/person/v1/33",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -33,7 +34,7 @@
 								"api",
 								"person",
 								"v1",
-								"13"
+								"33"
 							]
 						},
 						"description": "Finds a Person"
@@ -56,7 +57,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/person/v1/13",
+							"raw": "{{baseUrl}}/api/person/v1/10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -64,7 +65,7 @@
 								"api",
 								"person",
 								"v1",
-								"13"
+								"10"
 							]
 						},
 						"description": "Finds a Person"
@@ -87,7 +88,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/person/v1",
+							"raw": "{{baseUrl}}/api/person/v1?page=3&size=10&direction=asc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -95,6 +96,66 @@
 								"api",
 								"person",
 								"v1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "direction",
+									"value": "asc"
+								}
+							]
+						},
+						"description": "Finds all People"
+					},
+					"response": []
+				},
+				{
+					"name": "Finds Person by Name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/person/v1/findPersonByName/be?page=3&size=10&direction=asc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"person",
+								"v1",
+								"findPersonByName",
+								"be"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "direction",
+									"value": "asc"
+								}
 							]
 						},
 						"description": "Finds all People"
@@ -252,7 +313,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/books/v1/16",
+							"raw": "{{baseUrl}}/api/books/v1/34",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -260,7 +321,7 @@
 								"api",
 								"books",
 								"v1",
-								"16"
+								"34"
 							]
 						},
 						"description": "Finds a Book"
@@ -274,7 +335,19 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json"
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/x-yaml",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
 							},
 							{
 								"key": "Origin",
@@ -294,7 +367,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/books/v1",
+							"raw": "{{baseUrl}}/api/books/v1?page=2&size=10&direction=desc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -302,6 +375,20 @@
 								"api",
 								"books",
 								"v1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "direction",
+									"value": "desc"
+								}
 							]
 						},
 						"description": "Finds all Books"

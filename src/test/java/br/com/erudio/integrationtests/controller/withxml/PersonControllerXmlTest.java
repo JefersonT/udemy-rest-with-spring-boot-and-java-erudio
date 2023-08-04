@@ -5,6 +5,7 @@ import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -246,7 +247,8 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 						.body()
 							.asString();
 
-		List<PersonVO> people = objectMapper.readValue(content, new TypeReference<List<PersonVO>>() {});
+		WrapperPersonVo wrapper = objectMapper.readValue(content, WrapperPersonVo.class);
+		var people = wrapper.getEmbedded().getPersons();
 
 		PersonVO foundPersonOne = people.get(0);
 

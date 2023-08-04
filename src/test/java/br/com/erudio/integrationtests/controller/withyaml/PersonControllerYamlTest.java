@@ -6,6 +6,7 @@ import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
@@ -21,9 +22,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -274,7 +272,7 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 	@Order(6)
 	public void testFindAll() throws JsonProcessingException {
 
-		var content = given().spec(specification)
+		var wrapper = given().spec(specification)
 				.config(
 						RestAssuredConfig
 								.config()
@@ -290,9 +288,9 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 					.statusCode(200)
 						.extract()
 						.body()
-							.as(PersonVO[].class, objectMapper);
+							.as(WrapperPersonVo.class, objectMapper);
 
-		List<PersonVO> people = Arrays.asList(content);
+		var people = wrapper.getEmbedded().getPersons();
 
 		PersonVO foundPersonOne = people.get(0);
 
