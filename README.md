@@ -18,4 +18,3 @@
 
     # Ou acessa o projeto via terminal e roda apenas as migrations
     mvn flyway:migrate
-### TESTE
