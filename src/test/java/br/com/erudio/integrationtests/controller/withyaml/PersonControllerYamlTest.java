@@ -6,6 +6,7 @@ import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelPerson;
 import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
@@ -282,15 +283,16 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 												ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
-					.when()
+				.queryParams("page", 3,"size", 10, "direction", "asc")
+				.when()
 					.get()
 				.then()
 					.statusCode(200)
 						.extract()
 						.body()
-							.as(WrapperPersonVo.class, objectMapper);
+							.as(PagedModelPerson.class, objectMapper);
 
-		var people = wrapper.getEmbedded().getPersons();
+		var people = wrapper.getContent();
 
 		PersonVO foundPersonOne = people.get(0);
 
@@ -300,11 +302,11 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(foundPersonOne.getAddress());
 		assertNotNull(foundPersonOne.getGender());
 
-		assertEquals(1, foundPersonOne.getId());
+		assertEquals(912, foundPersonOne.getId());
 
-		assertEquals("Leandro", foundPersonOne.getFirstName());
-		assertEquals("Costa", foundPersonOne.getLastName());
-		assertEquals("Uberlândia - Minas Gerais - Brasil", foundPersonOne.getAddress());
+		assertEquals("Aluino", foundPersonOne.getFirstName());
+		assertEquals("Mathewson", foundPersonOne.getLastName());
+		assertEquals("06 Dunning Road", foundPersonOne.getAddress());
 		assertEquals("Male", foundPersonOne.getGender());
 		assertTrue(foundPersonOne.getEnabled());
 
@@ -316,17 +318,60 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(foundPersonSix.getAddress());
 		assertNotNull(foundPersonSix.getGender());
 
-		assertEquals(8, foundPersonSix.getId());
+		assertEquals(597, foundPersonSix.getId());
 
-		assertEquals("Nelson", foundPersonSix.getFirstName());
-		assertEquals("Mandela", foundPersonSix.getLastName());
-		assertEquals("Mvezo - South Africa", foundPersonSix.getAddress());
-		assertEquals("Male", foundPersonSix.getGender());
-		assertTrue(foundPersonSix.getEnabled());
+		assertEquals("Ambur", foundPersonSix.getFirstName());
+		assertEquals("Dewane", foundPersonSix.getLastName());
+		assertEquals("64617 Del Sol Trail", foundPersonSix.getAddress());
+		assertEquals("Female", foundPersonSix.getGender());
+		assertFalse(foundPersonSix.getEnabled());
 	}
 
 	@Test
 	@Order(7)
+	public void testFindByName() throws JsonProcessingException {
+
+		var wrapper = given().spec(specification)
+				.config(
+						RestAssuredConfig
+								.config()
+								.encoderConfig(EncoderConfig.encoderConfig()
+										.encodeContentTypeAs(
+												TestConfigs.CONTENT_TYPE_YML,
+												ContentType.TEXT)))
+				.contentType(TestConfigs.CONTENT_TYPE_YML)
+				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.queryParams("page", 0,"size", 6, "direction", "asc")
+				.pathParam("firstName", "ayr")
+				.when()
+					.get("/findPersonByName/{firstName}")
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.as(PagedModelPerson.class, objectMapper);
+
+		var people = wrapper.getContent();
+
+		PersonVO foundPersonOne = people.get(0);
+
+		assertNotNull(foundPersonOne.getId());
+		assertNotNull(foundPersonOne.getFirstName());
+		assertNotNull(foundPersonOne.getLastName());
+		assertNotNull(foundPersonOne.getAddress());
+		assertNotNull(foundPersonOne.getGender());
+
+		assertEquals(2, foundPersonOne.getId());
+
+		assertEquals("Ayrton", foundPersonOne.getFirstName());
+		assertEquals("Senna", foundPersonOne.getLastName());
+		assertEquals("São Paulo - Brasil", foundPersonOne.getAddress());
+		assertEquals("Male", foundPersonOne.getGender());
+		assertTrue(foundPersonOne.getEnabled());
+	}
+
+	@Test
+	@Order(8)
 	public void testFindAllWithoutToken() {
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()

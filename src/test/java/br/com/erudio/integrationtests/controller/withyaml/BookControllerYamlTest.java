@@ -6,6 +6,8 @@ import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.BookVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelBook;
+import br.com.erudio.integrationtests.vo.wrappers.WrapperBookVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
@@ -227,7 +229,7 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
 	@Order(5)
 	public void testFindAll() throws JsonProcessingException {
 
-		var content = given().spec(specification)
+		var wrapper = given().spec(specification)
 				.config(
 						RestAssuredConfig
 								.config()
@@ -237,17 +239,18 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
 												ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.queryParams("page", 3,"size", 10, "direction", "asc")
 					.when()
 					.get()
 				.then()
 					.statusCode(200)
 						.extract()
 						.body()
-							.as(BookVO[].class, objectMapper);
+							.as(PagedModelBook.class, objectMapper);
 
-		List<BookVO> people = Arrays.asList(content);
+		var books = wrapper.getContent();
 
-		BookVO foundBookOne = people.get(0);
+		BookVO foundBookOne = books.get(0);
 
 		assertNotNull(foundBookOne.getId());
 		assertNotNull(foundBookOne.getTitle());
@@ -255,13 +258,13 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(foundBookOne.getLaunchDate());
 		assertNotNull(foundBookOne.getPrice());
 
-		assertEquals(1, foundBookOne.getId());
+		assertEquals(124, foundBookOne.getId());
 
-		assertEquals("Working effectively with legacy code", foundBookOne.getTitle());
-		assertEquals("Michael C. Feathers", foundBookOne.getAuthor());
-		assertEquals(49.00, foundBookOne.getPrice());
+		assertEquals("Nam dui.", foundBookOne.getTitle());
+		assertEquals("Alfonse Houlahan", foundBookOne.getAuthor());
+		assertEquals(244.20, foundBookOne.getPrice());
 
-		BookVO foundBookSix = people.get(5);
+		BookVO foundBookSix = books.get(5);
 
 		assertNotNull(foundBookSix.getId());
 		assertNotNull(foundBookSix.getTitle());
@@ -269,11 +272,11 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(foundBookSix.getLaunchDate());
 		assertNotNull(foundBookSix.getPrice());
 
-		assertEquals(6, foundBookSix.getId());
+		assertEquals(810, foundBookSix.getId());
 
-		assertEquals("Refactoring", foundBookSix.getTitle());
-		assertEquals("Martin Fowler e Kent Beck", foundBookSix.getAuthor());
-		assertEquals(88.00, foundBookSix.getPrice());
+		assertEquals("Suspendisse potenti.", foundBookSix.getTitle());
+		assertEquals("Alva Lemmen", foundBookSix.getAuthor());
+		assertEquals(178.78, foundBookSix.getPrice());
 	}
 
 	@Test
