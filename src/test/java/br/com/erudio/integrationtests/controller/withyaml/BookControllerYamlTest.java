@@ -7,7 +7,6 @@ import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.BookVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
 import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelBook;
-import br.com.erudio.integrationtests.vo.wrappers.WrapperBookVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
@@ -24,9 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -304,6 +301,57 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
 					.get()
 				.then()
 					.statusCode(403);
+	}
+
+	@Test
+	@Order(7)
+	public void testHATEOAS() throws JsonProcessingException {
+
+		var content = given().spec(specification)
+				.config(
+						RestAssuredConfig
+								.config()
+								.encoderConfig(EncoderConfig.encoderConfig()
+										.encodeContentTypeAs(
+												TestConfigs.CONTENT_TYPE_YML,
+												ContentType.TEXT)))
+				.contentType(TestConfigs.CONTENT_TYPE_YML)
+				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.queryParams("page", 3,"size", 10, "direction", "asc")
+					.when()
+					.get()
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+
+		assertTrue(content.contains("links:\n" +
+				"  - rel: \"self\"\n" +
+				"    href: \"http://localhost:8888/api/books/v1/124\""));
+		assertTrue(content.contains("links:\n" +
+				"  - rel: \"self\"\n" +
+				"    href: \"http://localhost:8888/api/books/v1/168\""));
+		assertTrue(content.contains("links:\n" +
+				"  - rel: \"self\"\n" +
+				"    href: \"http://localhost:8888/api/books/v1/380\""));
+
+		assertTrue(content.contains("page:\n" +
+				"  size: 10\n" +
+				"  totalElements: 1015\n" +
+				"  totalPages: 102\n" +
+				"  number: 3"));
+
+		assertTrue(content.contains("- rel: \"first\"\n" +
+				"  href: \"http://localhost:8888/api/books/v1?direction=asc&page=0&size=10&sort=author,asc\""));
+		assertTrue(content.contains("- rel: \"prev\"\n" +
+				"  href: \"http://localhost:8888/api/books/v1?direction=asc&page=2&size=10&sort=author,asc\""));
+		assertTrue(content.contains("- rel: \"self\"\n" +
+				"  href: \"http://localhost:8888/api/books/v1?page=3&size=10&direction=asc\""));
+		assertTrue(content.contains("- rel: \"next\"\n" +
+				"  href: \"http://localhost:8888/api/books/v1?direction=asc&page=4&size=10&sort=author,asc\""));
+		assertTrue(content.contains("- rel: \"last\"\n" +
+				"  href: \"http://localhost:8888/api/books/v1?direction=asc&page=101&size=10&sort=author,asc\""));
 	}
 
 	private void mockBook() {

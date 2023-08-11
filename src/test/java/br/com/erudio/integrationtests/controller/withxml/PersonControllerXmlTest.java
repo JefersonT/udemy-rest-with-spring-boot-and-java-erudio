@@ -340,7 +340,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 
 	@Test
 	@Order(9)
-	public void testHETEOAS() throws JsonProcessingException {
+	public void testHATEOAS() throws JsonProcessingException {
 
 		var content = given().spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_XML)
