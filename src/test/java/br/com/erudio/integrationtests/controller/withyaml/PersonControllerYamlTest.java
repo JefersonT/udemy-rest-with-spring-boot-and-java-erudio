@@ -7,7 +7,6 @@ import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
 import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelPerson;
-import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
@@ -395,6 +394,46 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 					.get()
 				.then()
 					.statusCode(403);
+	}
+
+
+
+	@Test
+	@Order(9)
+	public void testHATEOAS() throws JsonProcessingException {
+
+		var content = given().spec(specification)
+				.config(
+						RestAssuredConfig
+								.config()
+								.encoderConfig(EncoderConfig.encoderConfig()
+										.encodeContentTypeAs(TestConfigs.CONTENT_TYPE_YML, ContentType.TEXT)))
+				.contentType(TestConfigs.CONTENT_TYPE_YML)
+				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.queryParams("page", 3,"size", 10, "direction", "asc")
+					.when()
+					.get()
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+		// Caso ocorra problema nas assertions devido a espaços em branco
+		// Renomear o content para unthreatedContent e descomentar a linha abaixo
+		// var content = unthreatedContent.replace("\n", "").replace("\r", "");
+
+		assertTrue(content.contains("links:\n  - rel: \"self\"\n    href: \"http://localhost:8888/api/person/v1/912\""));
+
+		assertTrue(content.contains("links:\n  - rel: \"self\"\n    href: \"http://localhost:8888/api/person/v1/418\""));
+		assertTrue(content.contains("links:\n  - rel: \"self\"\n    href: \"http://localhost:8888/api/person/v1/699\""));
+
+		assertTrue(content.contains("page:\n  size: 10\n  totalElements: 1007\n  totalPages: 101\n  number: 3"));
+
+		assertTrue(content.contains("- rel: \"first\"\n  href: \"http://localhost:8888/api/person/v1?direction=asc&page=0&size=10&sort=firstName,asc\""));
+		assertTrue(content.contains("- rel: \"prev\"\n  href: \"http://localhost:8888/api/person/v1?direction=asc&page=2&size=10&sort=firstName,asc\""));
+		assertTrue(content.contains("- rel: \"self\"\n  href: \"http://localhost:8888/api/person/v1?page=3&size=10&direction=asc\""));
+		assertTrue(content.contains("- rel: \"next\"\n  href: \"http://localhost:8888/api/person/v1?direction=asc&page=4&size=10&sort=firstName,asc\""));
+		assertTrue(content.contains("- rel: \"last\"\n  href: \"http://localhost:8888/api/person/v1?direction=asc&page=100&size=10&sort=firstName,asc\""));
 	}
 
 	private void mockPerson() {

@@ -6,9 +6,7 @@ import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
 import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelPerson;
-import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
@@ -22,8 +20,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -340,6 +336,35 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 					.get()
 				.then()
 					.statusCode(403);
+	}
+
+	@Test
+	@Order(9)
+	public void testHETEOAS() throws JsonProcessingException {
+
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
+				.queryParams("page", 3,"size", 10, "direction", "asc")
+					.when()
+					.get()
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+
+		assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/person/v1/912</href></links>"));
+		assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/person/v1/418</href></links>"));
+		assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/person/v1/699</href></links>"));
+
+		assertTrue(content.contains("<page><size>10</size><totalElements>1007</totalElements><totalPages>101</totalPages><number>3</number></page>"));
+
+		assertTrue(content.contains("<rel>first</rel><href>http://localhost:8888/api/person/v1?direction=asc&amp;page=0&amp;size=10&amp;sort=firstName,asc</href>"));
+		assertTrue(content.contains("<rel>prev</rel><href>http://localhost:8888/api/person/v1?direction=asc&amp;page=2&amp;size=10&amp;sort=firstName,asc</href>"));
+		assertTrue(content.contains("<rel>self</rel><href>http://localhost:8888/api/person/v1?page=3&amp;size=10&amp;direction=asc</href>"));
+		assertTrue(content.contains("<rel>next</rel><href>http://localhost:8888/api/person/v1?direction=asc&amp;page=4&amp;size=10&amp;sort=firstName,asc</href>"));
+		assertTrue(content.contains("<rel>last</rel><href>http://localhost:8888/api/person/v1?direction=asc&amp;page=100&amp;size=10&amp;sort=firstName,asc</href>"));
 	}
 
 	private void mockPerson() {
