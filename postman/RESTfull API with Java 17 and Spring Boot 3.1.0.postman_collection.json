@@ -79,12 +79,24 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json"
+								"value": "application/json",
+								"disabled": true
 							},
 							{
 								"key": "Authorization",
 								"value": "Bearer {{accessToken}}",
 								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/x-yaml",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -132,7 +144,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/person/v1/findPersonByName/be?page=3&size=10&direction=asc",
+							"raw": "{{baseUrl}}/api/person/v1/findPersonByName/ayr?page=0&size=6&direction=asc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -141,16 +153,16 @@
 								"person",
 								"v1",
 								"findPersonByName",
-								"be"
+								"ayr"
 							],
 							"query": [
 								{
 									"key": "page",
-									"value": "3"
+									"value": "0"
 								},
 								{
 									"key": "size",
-									"value": "10"
+									"value": "6"
 								},
 								{
 									"key": "direction",
@@ -341,13 +353,13 @@
 							{
 								"key": "Accept",
 								"value": "application/x-yaml",
-								"type": "text",
-								"disabled": true
+								"type": "text"
 							},
 							{
 								"key": "Accept",
 								"value": "application/xml",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							},
 							{
 								"key": "Origin",
@@ -367,7 +379,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/books/v1?page=2&size=10&direction=desc",
+							"raw": "{{baseUrl}}/api/books/v1?page=3&size=10&direction=asc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -379,7 +391,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "2"
+									"value": "3"
 								},
 								{
 									"key": "size",
@@ -387,7 +399,7 @@
 								},
 								{
 									"key": "direction",
-									"value": "desc"
+									"value": "asc"
 								}
 							]
 						},
