@@ -8,6 +8,7 @@ import br.com.erudio.mapper.DozerMapper;
 import br.com.erudio.model.Person;
 import br.com.erudio.repositories.PersonRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -16,12 +17,11 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
+@Slf4j
 public class PersonServices {
 
     @Autowired
@@ -30,12 +30,10 @@ public class PersonServices {
     @Autowired
     PagedResourcesAssembler<PersonVO> assembler;
 
-    private Logger logger = Logger.getLogger(PersonServices.class.getName());
-
     public PersonVO create(PersonVO person){
         if (person == null) throw new RequiredObjectIsNullException();
 
-        logger.info("Creating person");
+        log.info("Creating person");
         var entity = DozerMapper.parseObject(person, Person.class);
         var vo = DozerMapper.parseObject(personRepository.save(entity), PersonVO.class);
         vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
@@ -45,7 +43,7 @@ public class PersonServices {
     public PersonVO update(PersonVO person){
         if (person == null) throw new RequiredObjectIsNullException();
 
-        logger.info("Updating person");
+        log.info("Updating person");
         var entity = personRepository.findById(person.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
@@ -60,13 +58,13 @@ public class PersonServices {
     }
 
     public void delete(Long id){
-        logger.info("Deleting one PersonVO");
+        log.info("Deleting one PersonVO");
         Person entity = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         personRepository.delete(entity);
     }
 
     public PagedModel<EntityModel<PersonVO>> findAll(Pageable pageable){
-        logger.info("Finding all people");
+        log.info("Finding all people");
 
         var personPage = personRepository.findAll(pageable);
 
@@ -78,7 +76,7 @@ public class PersonServices {
     }
 
     public PagedModel<EntityModel<PersonVO>> findPersonByName(String firstName, Pageable pageable){
-        logger.info("Finding all people with name " + firstName);
+        log.info("Finding all people with name " + firstName);
 
         var personPage = personRepository.findPersonsByName(firstName, pageable);
 
@@ -90,7 +88,7 @@ public class PersonServices {
     }
 
     public PersonVO findById(Long id){
-        logger.info("Finding one Person");
+        log.info("Finding one Person");
 
         var person = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
@@ -101,7 +99,7 @@ public class PersonServices {
 
     @Transactional
     public PersonVO disabelPerson(Long id){
-        logger.info("Disabling one Person");
+        log.info("Disabling one Person");
 
         personRepository.disabledPerson(id);
 

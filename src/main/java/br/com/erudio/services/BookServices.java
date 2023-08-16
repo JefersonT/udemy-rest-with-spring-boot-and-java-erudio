@@ -7,6 +7,7 @@ import br.com.erudio.exceptions.ResourceNotFoundException;
 import br.com.erudio.mapper.DozerMapper;
 import br.com.erudio.model.Book;
 import br.com.erudio.repositories.BookRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -15,12 +16,11 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
+@Slf4j
 public class BookServices {
 
     @Autowired
@@ -29,12 +29,10 @@ public class BookServices {
     @Autowired
     PagedResourcesAssembler<BookVO> assembler;
 
-    private Logger logger = Logger.getLogger(BookServices.class.getName());
-
     public BookVO create(BookVO book){
         if (book == null) throw new RequiredObjectIsNullException();
 
-        logger.info("Creating book");
+        log.info("Creating book");
         var entity = DozerMapper.parseObject(book, Book.class);
         var vo = DozerMapper.parseObject(bookRepository.save(entity), BookVO.class);
         vo.add(linkTo(methodOn(BookController.class).findById(vo.getKey())).withSelfRel());
@@ -44,7 +42,7 @@ public class BookServices {
     public BookVO update(BookVO book){
         if (book == null) throw new RequiredObjectIsNullException();
 
-        logger.info("Updating book");
+        log.info("Updating book");
         var entity = bookRepository.findById(book.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
@@ -59,13 +57,13 @@ public class BookServices {
     }
 
     public void delete(Long id){
-        logger.info("Deleting one BooksVOVO");
+        log.info("Deleting one BooksVOVO");
         var entity = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         bookRepository.delete(entity);
     }
 
     public PagedModel<EntityModel<BookVO>> findAll(Pageable pageable){
-        logger.info("Finding all books");
+        log.info("Finding all books");
 
         var bookPage = bookRepository.findAll(pageable);
 
@@ -77,7 +75,7 @@ public class BookServices {
     }
 
     public BookVO findById(Long id){
-        logger.info("Finding one Book");
+        log.info("Finding one Book");
 
         var book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
