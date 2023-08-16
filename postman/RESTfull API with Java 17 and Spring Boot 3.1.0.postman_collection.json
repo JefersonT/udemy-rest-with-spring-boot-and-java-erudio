@@ -596,12 +596,12 @@
 									"key": "files",
 									"type": "file",
 									"src": [
-										"/home/tqi_jtorres/Pictures/Wallpapers/Uchiha.jpg",
-										"/home/tqi_jtorres/Pictures/Wallpapers/Naruto.jpg",
-										"/home/tqi_jtorres/Pictures/Wallpapers/Lilas.jpg",
-										"/home/tqi_jtorres/Pictures/Wallpapers/Dragon.jpg",
-										"/home/tqi_jtorres/Pictures/Wallpapers/grout_face.jpg",
-										"/home/tqi_jtorres/Pictures/Wallpapers/Black.jpg"
+										"/home/tqi_jtorres/Estudos/udemy-rest-with-spring-boot-and-java-erudio/Code/UploadDir/Black.jpg",
+										"/home/tqi_jtorres/Estudos/udemy-rest-with-spring-boot-and-java-erudio/Code/UploadDir/Dragon.jpg",
+										"/home/tqi_jtorres/Estudos/udemy-rest-with-spring-boot-and-java-erudio/Code/UploadDir/grout_face.jpg",
+										"/home/tqi_jtorres/Estudos/udemy-rest-with-spring-boot-and-java-erudio/Code/UploadDir/Lilas.jpg",
+										"/home/tqi_jtorres/Estudos/udemy-rest-with-spring-boot-and-java-erudio/Code/UploadDir/Naruto.jpg",
+										"/home/tqi_jtorres/Estudos/udemy-rest-with-spring-boot-and-java-erudio/Code/UploadDir/Uchiha.jpg"
 									]
 								}
 							]
@@ -616,6 +616,42 @@
 								"file",
 								"v1",
 								"uploadMultipleFiles"
+							]
+						},
+						"description": "Adds a new Book by passin in a JSON, XML or YML representation of Book"
+					},
+					"response": []
+				},
+				{
+					"name": "Download a File",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/file/v1/downloadFile/Dragon.jpg",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"file",
+								"v1",
+								"downloadFile",
+								"Dragon.jpg"
 							]
 						},
 						"description": "Adds a new Book by passin in a JSON, XML or YML representation of Book"
