@@ -18,3 +18,7 @@
 
     # Ou acessa o projeto via terminal e roda apenas as migrations
     mvn flyway:migrate
+
+### Comando para gerar o .jar
+    # Pelo terminal acesse a pasta do arquivo pom.xml do projeto e executo o comando abaixo
+    mvn clean package -DskipTests
