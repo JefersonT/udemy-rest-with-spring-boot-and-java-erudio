@@ -1,7 +1,6 @@
 package br.com.erudio.integrationtests.vo.wrappers;
 
 import br.com.erudio.integrationtests.vo.BookVO;
-import br.com.erudio.integrationtests.vo.PersonVO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
