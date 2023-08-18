@@ -22,3 +22,9 @@
 ### Comando para gerar o .jar
     # Pelo terminal acesse a pasta do arquivo pom.xml do projeto e executo o comando abaixo
     mvn clean package -DskipTests
+
+### Comando para subir a aplicação via docker-compose
+    # Pelo terminal acesse a pasta do arquivo docker-compose.yml do projeto e executo o comando abaixo
+    docker-compose up -d --build
+
+    
