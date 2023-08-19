@@ -4,7 +4,7 @@
 ### Configuração de Conexão
     
     # Caso o ip já esteja em uso, redefini-lo no arquivo docker-compose.yml"
-    host: 172.21.0.2
+    host: localhost
     port: 3306
     banco: rest_with_spring_boot_udemy
     senha: admin123

@@ -12,8 +12,6 @@ security:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-  flyway:
-    schemas: rest_with_spring_boot_udemy
   jpa:
     hibernate:
       ddl-auto: none
