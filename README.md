@@ -24,6 +24,8 @@
     mvn clean package -DskipTests
 
 ### Comando para subir a aplicação via docker-compose
+[![Docker Hub Repo](https://img.shields.io/docker/pulls/jefersont/rest-with-spring-boot-erudio.svg)](https://hub.docker.com/repository/docker/jefersont/rest-with-spring-boot-erudio)
+    
     # Pelo terminal acesse a pasta do arquivo docker-compose.yml do projeto e executo o comando abaixo
     docker-compose up -d --build
 
