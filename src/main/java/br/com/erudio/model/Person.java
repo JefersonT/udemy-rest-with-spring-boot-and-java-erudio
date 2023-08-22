@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
 @Table(name = "person")
 public class Person implements Serializable {
 
@@ -29,4 +29,7 @@ public class Person implements Serializable {
 
     @Column(nullable = false, length = 6)
     private String gender;
+
+    @Column(nullable = false)
+    private Boolean enabled;
 }
