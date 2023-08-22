@@ -31,6 +31,7 @@
 
 ### Dockerizando a Aplicação
 [![Continuous Integration with Github Actions](https://github.com/jefersont/udemy-rest-with-spring-boot-and-java-erudio/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/jefersont/udemy-rest-with-spring-boot-and-java-erudio/actions/workflows/ACTION_SCRIPT_FILENAME.yml)
+
 Ao realizar o teste local, ajusta o workdir no application.yml(Test) apenas para `Code/UploadDir`
 
     
