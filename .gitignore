@@ -32,5 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-## Volume BD
-volume-bd-mysql/*
+## UploadDir
+UploadDir/*
