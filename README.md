@@ -29,4 +29,7 @@
     # Pelo terminal acesse a pasta do arquivo docker-compose.yml do projeto e executo o comando abaixo
     docker-compose up -d --build
 
+### Dockerizando a Aplicação
+Ao realizar o teste local, ajusta o workdir no application.yml(Test) apenas para `Code/UploadDir`
+
     
