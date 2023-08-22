@@ -3,7 +3,7 @@ server:
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
 file:
-  upload-dir: Code/UploadDir #Ao realizar o teste local, ajusta o workdir apenas para Code/UploadDir
+  upload-dir: Code/UploadDir
 security:
   jwt:
     token:
